@@ -5,8 +5,11 @@ import {
   Users, 
   TrendingUp, 
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  MoreVertical
 } from 'lucide-react';
+
+import { getStatusBadge } from './Helpers';
 
 const Dashboard = () => {
   const user = useSelector((state) => state.auth.user);
@@ -49,6 +52,14 @@ const Dashboard = () => {
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
     },
+  ];
+
+  // Mock Data for Recent Bookings Table
+  const recentBookings = [
+    { id: '#BK-001', client: 'Karim', service: 'Haircut & Beard', date: 'Today, 2:30 PM', status: 'Confirmed', amount: '150 MAD' },
+    { id: '#BK-002', client: 'Sara', service: 'Consultation', date: 'Tomorrow, 10:00 AM', status: 'Pending', amount: '300 MAD' },
+    { id: '#BK-003', client: 'Youssef', service: 'VIP Treatment', date: 'Mar 18, 4:15 PM', status: 'Confirmed', amount: '450 MAD' },
+    { id: '#BK-004', client: 'Amina', service: 'Basic Service', date: 'Mar 19, 9:00 AM', status: 'Cancelled', amount: '100 MAD' },
   ];
 
   return (
@@ -112,9 +123,58 @@ const Dashboard = () => {
         })}
       </div>
 
-      {/* Placeholder for the next section */}
-      <div className="mt-8 bg-white border border-gray-100 rounded-xl shadow-sm p-6 flex items-center justify-center h-64 border-dashed">
-        <p className="text-gray-400 font-medium">Recent Bookings Table will go here</p>
+      {/* Recent Bookings Table Section */}
+      <div className="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mt-8">
+        <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+          <h3 className="text-base font-semibold text-gray-900">Recent Bookings</h3>
+          <button className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
+            View all
+          </button>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking ID</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service & Date</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {recentBookings.map((booking) => (
+                <tr key={booking.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {booking.id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {booking.client}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{booking.service}</div>
+                    <div className="text-sm text-gray-500">{booking.date}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
+                    {booking.amount}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${getStatusBadge(booking.status)}`}>
+                      {booking.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <MoreVertical className="h-5 w-5" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
