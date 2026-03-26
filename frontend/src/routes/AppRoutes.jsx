@@ -6,6 +6,7 @@ import Login from '../pages/Auth/Login';
 import Register from '../pages/Auth/Register';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import Builder from '../pages/Builder/Builder';
 
 const AppRoutes = () => {
     return (
@@ -19,7 +20,7 @@ const AppRoutes = () => {
             <Route element={<ProtectedRoute />}>
                 <Route element={<DashboardLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/builder" element={<div className="p-10">WordPress-like Builder</div>} />
+                    <Route path="/builder" element={<Builder />} />
                     <Route path="/profile" element={<div className="p-10">User Profile Settings</div>} />
                 </Route>
             </Route>
