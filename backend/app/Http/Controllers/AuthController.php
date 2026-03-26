@@ -22,7 +22,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Utilisateur enregistré avec succès'], 201);
+        return response()->json([
+            'message' => 'Utilisateur enregistré avec succès',
+            'user' => $user
+        ], 201);
     }
 
     public function login(Request $request)
@@ -46,9 +49,5 @@ class AuthController extends Controller
                 'user' => $user
             ], 200);
         }
-
-        // Create a new token for the user
-        $token = $user->createToken('auth_token')->plainTextToken;
-        return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
     }
 }
