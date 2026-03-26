@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +49,6 @@ class AuthController extends Controller
 
         // Create a new token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
     }
 }
