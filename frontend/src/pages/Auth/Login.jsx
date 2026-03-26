@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../store/slices/authSlice';
-import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import toast from 'react-hot-toast';
+
+import { setCredentials, setLoading } from '../../store/slices/authSlice';
+import { authApi } from '../../api/auth.api';
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const loading = useSelector((state) => state.auth.loading);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,32 +26,21 @@ const Login = () => {
             return;
         }
 
-        setIsLoading(true);
-
         try {
-            //response = await axios.post('/api/login', { email, password });
+            dispatch(setLoading(true));
 
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            const response = await authApi.login({ email, password })
 
-            // Mocking the backend response
-            const mockUserData = { id: 1, name: 'Service Provider', email };
-            const mockToken = 'super-secret-jwt-token-123';
+            dispatch(setCredentials({ user: response.user }));
 
-            dispatch(
-                setCredentials({
-                    user: mockUserData,
-                    token: mockToken,
-                })
-            );
-
-            toast.success('Welcome back!');
+            toast.success(`${response.message}`);
             navigate('/dashboard');
 
-        } catch (error) {
-            toast.error('Invalid email or password');
-            console.error('Login failed:', error);
+        } catch (err) {
+            const errorMsg = err.response?.message || 'Invalid email or password';
+            toast.error(errorMsg);
         } finally {
-            setIsLoading(false);
+            dispatch(setLoading(false));
         }
     };
 
@@ -82,12 +75,11 @@ const Login = () => {
                                     name="email"
                                     type="email"
                                     autoComplete="email"
-                                    required
                                     className="appearance-none block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
                                     placeholder="you@example.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    disabled={isLoading}
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -106,12 +98,11 @@ const Login = () => {
                                     name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     autoComplete="current-password"
-                                    required
                                     className="appearance-none block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    disabled={isLoading}
+                                    disabled={loading}
                                 />
                                 <button
                                     type="button"
@@ -132,10 +123,10 @@ const Login = () => {
                     <div>
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={loading}
                             className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
                         >
-                            {isLoading ? (
+                            {loading ? (
                                 <span className="flex items-center gap-2">
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                     Signing in...
