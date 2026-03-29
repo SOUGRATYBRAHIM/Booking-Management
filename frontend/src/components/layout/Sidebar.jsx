@@ -1,16 +1,19 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { User } from 'lucide-react';
-import { logout } from '../../store/slices/authSlice';
 import {
+    User,
     LayoutDashboard,
     CalendarDays,
-    Paintbrush,
+    LayoutTemplate,
     Settings,
     LogOut
 } from 'lucide-react';
 
+import { logout } from '../../store/slices/authSlice';
+
+
 const Sidebar = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     // const user = await .get('/api/user');
@@ -18,13 +21,14 @@ const Sidebar = () => {
 
     const handleLogout = () => {
         dispatch(logout());
+        navigate('/login');
     };
 
     const navItems = [
         { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+        { name: 'My Pages', path: '/pages', icon: LayoutTemplate },
         { name: 'Bookings', path: '/bookings', icon: CalendarDays },
-        { name: 'Page Builder', path: '/builder', icon: Paintbrush },
-        { name: 'Profile', path: '/profile', icon: Settings },
+        { name: 'Settings', path: '/settings', icon: Settings },
     ];
 
     return (
@@ -44,7 +48,7 @@ const Sidebar = () => {
                             key={item.name}
                             to={item.path}
                             className={({ isActive }) => `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors font-medium text-sm
-                                    ${item.name === 'Profile' ? 'mt-4 pt-4 border-t border-gray-200' : ''}
+                                    ${item.name === 'Settings' ? 'mt-4 pt-4 border-t border-gray-200' : ''}
                                     ${isActive
                                     ? 'bg-blue-50 text-blue-700'
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
