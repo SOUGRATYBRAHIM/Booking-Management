@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute.jsx';
+// import ProtectedRoute from './ProtectedRoute.jsx';
 
 import Home from '../pages/Home/Home';
 import Login from '../pages/Auth/Login';
@@ -16,14 +16,16 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
+            
+
             {/* Protected Routes - Only logged-in users can see these */}
-            <Route element={<ProtectedRoute />}>
+            {/* <Route element={<ProtectedRoute />}> */}
                 <Route element={<DashboardLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/builder" element={<Builder />} />
                     <Route path="/profile" element={<div className="p-10">User Profile Settings</div>} />
                 </Route>
-            </Route>
+            {/* </Route> */}
         </Routes>
     );
 };
