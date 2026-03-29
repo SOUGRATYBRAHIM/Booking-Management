@@ -31,17 +31,15 @@ const Login = () => {
 
             const response = await authApi.login({ email, password })
 
-            dispatch(setCredentials({ user: response.user }));
+            dispatch(setCredentials({ user: response.data.user }));
 
-            toast.success(`${response.message}`);
+            toast.success(`${response.data.message}`);
             navigate('/dashboard');
 
         } catch (err) {
-            const errorMsg = err.response?.message || 'Invalid email or password';
-            toast.error(errorMsg);
-        } finally {
-            dispatch(setLoading(false));
-        }
+            toast.error(err.response?.data?.message);
+
+        } finally { dispatch(setLoading(false)) }
     };
 
     return (

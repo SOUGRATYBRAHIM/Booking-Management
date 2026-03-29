@@ -31,7 +31,7 @@ const Register = () => {
 
         if (password !== confirmPassword) { toast.error('Passwords do not match!'); return; }
 
-        if (password.length < 6) { toast.error('Password must be at least 6 characters'); return; }
+        if (password.length < 8) { toast.error('Password must be at least 8 characters'); return; }
 
         try {
             dispatch(setLoading(true));
@@ -39,17 +39,16 @@ const Register = () => {
             const response = await authApi.register({ name, email, password, password_confirmation: confirmPassword });
 
             dispatch(
-                setCredentials({ user: response.user })
+                setCredentials({ user: response.data.user })
             );
 
-            toast.success(`${response.message}`);
+            toast.success(`${response.data.message}`);
             navigate('/dashboard');
 
         } catch (error) {
-            toast.error(error.response?.message || 'Registration failed. Please try again.');
-        } finally {
-            dispatch(setLoading(false));
-        }
+            toast.error(error.response?.data?.message);
+
+        } finally { dispatch(setLoading(false)) }
     };
 
     return (
