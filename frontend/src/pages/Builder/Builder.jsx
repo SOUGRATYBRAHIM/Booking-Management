@@ -35,7 +35,7 @@ const Builder = () => {
           </div>
         </div>
 
-        <button onClick={handleSave} className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 shadow-sm">
+        <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 shadow-sm">
           <Save className="h-4 w-4" /> Publish
         </button>
       </div>

@@ -20,4 +20,5 @@ public function profile(Request $request)
         ],
     ]);
 }
+
 }
