@@ -40,9 +40,9 @@ class PageController extends Controller
     }
 
     // GET /api/pages/{id} — détail d'une page (user connecté)
-    public function show2(Request $request, $id)
+    public function show(Request $request, $id)
     {
-        $page = $request->user()->pages()->with('services')->findOrFail($id);
+        $page = $request->user()->pages()->with('category')->findOrFail($id);
 
         return response()->json(['page' => $page]);
     }
@@ -78,11 +78,11 @@ class PageController extends Controller
     }
 
     // GET /api/p/{slug} — landing page publique (client externe)
-    public function show($slug)
+    public function showPublic($slug)
     {
         $page = Page::where('slug', $slug)
                     ->where('is_published', true)
-                    ->with('services')
+                    ->with('category')
                     ->firstOrFail();
 
         return response()->json(['page' => $page]);

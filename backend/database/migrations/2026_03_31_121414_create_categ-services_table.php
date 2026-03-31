@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('categ-services', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('page_id');
-            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
             $table->integer('duration_minutes');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-});
+        });
     }
 
     /**
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('categ-services');
     }
 };

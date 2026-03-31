@@ -9,6 +9,7 @@ class Page extends Model
 {
     protected $fillable = [
         'user_id',
+        'category_id',
         'title',
         'slug',
         'content',
@@ -28,15 +29,15 @@ class Page extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Page a plusieurs services
-    public function services()
-    {
-        return $this->hasMany(Service::class);
-    }
-
     // Page a plusieurs bookings
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    // Page appartient à une categorie
+    public function category()
+    {
+        return $this->belongsTo(Categorie::class);
     }
 }

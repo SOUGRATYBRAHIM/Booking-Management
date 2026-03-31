@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->unsignedBigInteger('categ_service_id');
+            $table->foreign('categ_service_id')->references('id')->on('categ-services')->onDelete('cascade');
             $table->string('client_name');
             $table->string('client_phone');
             $table->text('notes')->nullable();
             $table->dateTime('booking_time');
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
-            $table->timestamps();
-});
+            $table->timestamps();   
+        });
     }
 
     /**

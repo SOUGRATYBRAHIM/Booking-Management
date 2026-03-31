@@ -8,7 +8,7 @@ class Booking extends Model
 {
     protected $fillable = [
         'page_id',
-        'service_id',
+        'categ_service_id',
         'client_name',
         'client_phone',
         'notes',
@@ -27,9 +27,11 @@ class Booking extends Model
         return $this->belongsTo(Page::class);
     }
 
-    // Booking appartient à un service
-    public function service()
+    // Booking appartient à un service de categorie
+    public function categService()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(CategService::class, 'categ_service_id');
     }
+
+
 }
