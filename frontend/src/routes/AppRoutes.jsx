@@ -8,6 +8,8 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import Builder from '../pages/Builder/Builder';
 import MyPages from '../pages/MyPages/MyPages';
 import PublicView from '../pages/PublicView/PublicView';
+import Settings from '../pages/Settings/Settings';
+import Bookings from '../pages/Bookings/Bookings';
 import DashboardLayout from '../components/layout/DashboardLayout';
 
 
@@ -28,7 +30,8 @@ const AppRoutes = () => {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/pages" element={<MyPages />} />
                     <Route path="/builder/:id" element={<Builder />} />
-                    <Route path="/profile" element={<div className="p-10">User Profile</div>} />
+                    <Route path="/bookings" element={<Bookings />} />
+                    <Route path="/settings" element={<Settings />} />
                 </Route>
             </Route>
         </Routes>
