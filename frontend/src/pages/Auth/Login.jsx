@@ -1,22 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { setCredentials, setLoading } from '../../store/slices/authSlice';
 import { authApi } from '../../api/auth.api';
-
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
+    const { setUser } = useAuth();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const loading = useSelector((state) => state.auth.loading);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,19 +24,18 @@ const Login = () => {
         }
 
         try {
-            dispatch(setLoading(true));
+            setLoading(true);
 
-            const response = await authApi.login({ email, password })
+            const response = await authApi.login({ email, password });
+            setUser(response.data.user);
 
-            dispatch(setCredentials({ user: response.data.user }));
-
-            toast.success(`${response.data.message}`);
+            toast.success(response.data?.message);
             navigate('/dashboard');
 
         } catch (err) {
             toast.error(err.response?.data?.message);
 
-        } finally { dispatch(setLoading(false)) }
+        } finally { setLoading(false) }
     };
 
     return (

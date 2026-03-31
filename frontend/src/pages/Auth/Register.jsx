@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Loader2, Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { setCredentials, setLoading } from '../../store/slices/authSlice';
 import { authApi } from '../../api/auth.api';
+import { useAuth } from '../../context/AuthContext';
 
 
 const Register = () => {
@@ -18,11 +17,10 @@ const Register = () => {
     // UI State
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
+    const { setUser } = useAuth();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const loading = useSelector((state) => state.auth.loading);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,21 +32,18 @@ const Register = () => {
         if (password.length < 8) { toast.error('Password must be at least 8 characters'); return; }
 
         try {
-            dispatch(setLoading(true));
+            setLoading(true);
 
             const response = await authApi.register({ name, email, password, password_confirmation: confirmPassword });
+            setUser(response.data.user);
 
-            dispatch(
-                setCredentials({ user: response.data.user })
-            );
-
-            toast.success(`${response.data.message}`);
+            toast.success(response.data.message);
             navigate('/dashboard');
 
         } catch (error) {
             toast.error(error.response?.data?.message);
 
-        } finally { dispatch(setLoading(false)) }
+        } finally { setLoading(false) }
     };
 
     return (
