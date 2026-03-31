@@ -3,17 +3,17 @@ import { Toaster } from 'react-hot-toast';
 
 import AppRoutes from './routes/AppRoutes';
 import { toastOptions } from './utils/toastConfig';
+import { AuthProvider } from './context/AuthContext';
 
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-      <Toaster
-        position="bottom-right"
-        toastOptions={toastOptions}
-      />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+        <Toaster position="bottom-right" toastOptions={toastOptions} />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
