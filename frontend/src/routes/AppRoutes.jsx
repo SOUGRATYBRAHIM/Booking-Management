@@ -10,6 +10,7 @@ import MyPages from '../pages/MyPages/MyPages';
 import PublicView from '../pages/PublicView/PublicView';
 import Settings from '../pages/Settings/Settings';
 import Bookings from '../pages/Bookings/Bookings';
+import Calendar from '../pages/Calendar/Calendar';
 import DashboardLayout from '../components/layout/DashboardLayout';
 
 
@@ -31,6 +32,7 @@ const AppRoutes = () => {
                     <Route path="/pages" element={<MyPages />} />
                     <Route path="/builder/:id" element={<Builder />} />
                     <Route path="/bookings" element={<Bookings />} />
+                    <Route path="/Calendar" element={<Calendar />} />
                     <Route path="/settings" element={<Settings />} />
                 </Route>
             </Route>
