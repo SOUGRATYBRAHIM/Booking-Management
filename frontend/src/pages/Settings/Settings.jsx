@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { 
   Camera, Save, Lock, AlertTriangle, Trash2,
@@ -7,12 +6,12 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../context/AuthContext';
+import { userApi } from '../../api/user.api';
 import Modal from '../../components/ui/Modal';
 
 
 const Settings = () => {
     const { user, setUser } = useAuth();
-    const navigate = useNavigate();
 
     // Local State
     const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -58,63 +57,84 @@ const Settings = () => {
         setPhotoPreview(user?.photo || null);
     };
 
+    // Profile Update Handler
     const handleProfileUpdate = async (e) => {
         e.preventDefault();
         setIsUpdatingProfile(true);
 
-        // Mock API call
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setUser({ ...user, name: profileData.name, email: profileData.email, photo: photoPreview });
+            const formData = new FormData();
+            formData.append('name', profileData.name);
+            formData.append('email', profileData.email);
+            
+            if (fileInputRef.current?.files[0]) {
+                formData.append('photo', fileInputRef.current.files[0]);
+            }
+            
+            formData.append('_method', 'PUT');
 
-            toast.success('Profile updated successfully!');
+            const response = await userApi.updateProfile(formData);
+
+            const updatedUser = response.data.user;
+            
+            setUser(updatedUser);
+            toast.success(response.data.message);
             setIsEditingProfile(false);
 
-        } catch (error) { toast.error('Failed to update profile.'); }
+        } catch {
+            toast.error('Impossible de mettre à jour le profil.');
+            setIsEditingProfile(false);
+        }
     };
 
+    // Password Update Handler
     const handlePasswordUpdate = async (e) => {
         e.preventDefault();
         setIsUpdatingPassword(true);
 
-        // Mock API call
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            setTimeout(() => {
-                toast.error('New passwords do not match!');
-                setIsUpdatingPassword(false);
-            }, 500);
+            toast.error('New passwords do not match!');
+            setIsUpdatingPassword(false);
             return;
         }
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            toast.success('Password updated successfully!');
+            const payload = {
+                current_password: passwordData.currentPassword,
+                password: passwordData.newPassword,
+                password_confirmation: passwordData.confirmPassword
+            };
 
-            setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-            
+            const response = await userApi.updatePassword(payload);
+            toast.success(response.data.message);
+
             // Reset visibility
+            setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
             setShowCurrentPassword(false);
             setShowNewPassword(false);
             setShowConfirmPassword(false);
+            setIsUpdatingPassword(false);
 
         } catch (error) {
-            toast.error('Failed to update password.');
-
-        } finally { setIsUpdatingPassword(false); }
+            toast.error(error.response.data.message);
+            setIsUpdatingPassword(false);
+        }
     };
 
+    // Account Deletion Handler
     const handleDeleteAccount = async () => {
         setIsDeleting(true);
 
-        // Mock API call
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const response = await userApi.deleteAccount({ password: deleteConfirmation });
+            toast.success(response.data.message);
 
-            toast.success('Account deleted permanently.');
-            navigate('/');
+            setDeleteConfirmation('');
+
+            setUser(null);
 
         } catch (error) {
-            toast.error('Failed to delete account.');
+            toast.error(error.response.data.message);
             setIsDeleting(false);
         }
     };
@@ -339,7 +359,7 @@ const Settings = () => {
             >
                 <div className="space-y-4">
                     <div className="bg-red-50 p-4 rounded-lg flex gap-3 border border-red-100">
-                        <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0" />
+                        <AlertTriangle className="h-6 w-6 text-red-600 shrink-0" />
                         <p className="text-sm text-red-800">
                             <strong>Warning:</strong> This action is irreversible. All your landing pages, bookings, and client data will be permanently wiped from our servers.
                         </p>
@@ -347,13 +367,13 @@ const Settings = () => {
 
                     <div className="pt-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Please type <strong>DELETE</strong> to confirm.
+                            Please type <strong>your password</strong> to confirm.
                         </label>
                         <input
                             type="text"
                             value={deleteConfirmation}
                             onChange={(e) => setDeleteConfirmation(e.target.value)}
-                            placeholder="DELETE"
+                            placeholder="Password"
                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
                         />
                     </div>
@@ -366,9 +386,10 @@ const Settings = () => {
                         >
                             Cancel
                         </button>
+
                         <button
                             onClick={handleDeleteAccount}
-                            disabled={deleteConfirmation !== 'DELETE' || isDeleting}
+                            disabled={isDeleting}
                             className="hover:cursor-pointer flex items-center gap-2 px-5 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
                             {isDeleting ? 'Deleting...' : 'Permanently Delete'}
