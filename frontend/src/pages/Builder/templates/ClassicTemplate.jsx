@@ -47,7 +47,7 @@ const ClassicTemplate = ({ data }) => {
         </div>
         
         {/* Right: Image */}
-        <div className="flex-1 bg-gray-200 min-h-[400px] lg:min-h-full relative overflow-hidden">
+        <div className="flex-1 bg-gray-200 min-h-100 lg:min-h-full relative overflow-hidden">
           <img 
             src={content.heroImage || 'https://images.unsplash.com/photo-1521590832167-7bfcbaa6362d?w=800&q=80'} 
             alt="Hero" 

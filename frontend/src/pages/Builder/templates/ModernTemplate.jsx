@@ -7,7 +7,7 @@ const ModernTemplate = ({ data }) => {
     <div className={`min-h-full bg-white flex flex-col ${theme.fontFamily}`}>
 
       {/* 1. HERO SECTION */}
-      <div className="relative h-[40vh] min-h-[300px] w-full">
+      <div className="relative h-[40vh] min-h-75 w-full">
         <img
           src={content.heroImage || 'https://images.unsplash.com/photo-1521590832167-7bfcbaa6362d?w=800&q=80'}
           alt="Hero"

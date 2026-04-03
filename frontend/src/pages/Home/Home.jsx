@@ -138,7 +138,7 @@ const Home = () => {
             <p className="text-gray-500 text-sm mt-6">✓ 14-day free trial • No credit card required</p>
           </div>
           <div className="relative">
-            <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl h-96 shadow-2xl">
+            <div className="bg-linear-to-br from-blue-400 to-blue-600 rounded-2xl h-96 shadow-2xl">
               <div className="flex items-center justify-center h-full">
                 <div className="text-white text-center">
                   <BarChart3 size={80} className="mx-auto mb-4 opacity-80" />
@@ -296,7 +296,7 @@ const Home = () => {
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h3>
                 <div className="space-y-4">
                   <div className="flex gap-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-600 flex-shrink-0">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-600 shrink-0">
                       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                       <path d="m22 6-10 7L2 6"></path>
                     </svg>
@@ -306,7 +306,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-600 flex-shrink-0">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-600 shrink-0">
                       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                     </svg>
                     <div>
@@ -315,7 +315,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <Clock className="text-blue-600 flex-shrink-0" size={24} />
+                    <Clock className="text-blue-600 shrink-0" size={24} />
                     <div>
                       <h4 className="font-semibold text-gray-900">Support Hours</h4>
                       <p className="text-gray-600">24/7 Available</p>
