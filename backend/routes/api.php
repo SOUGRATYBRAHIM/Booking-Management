@@ -6,6 +6,7 @@
     use App\Http\Controllers\PageController;
     use App\Http\Controllers\BookingController;
     use App\Http\Controllers\ServiceController;
+    use App\Http\Controllers\CalendarController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -40,4 +41,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings', [BookingController::class, 'index']);
     Route::get('/bookings/{id}', [BookingController::class, 'show']);
     Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus']);
+
+    // Calendar routes
+    Route::get('/pages/{page}/calendar', [CalendarController::class, 'index']);
+    Route::post('/pages/{page}/calendar', [CalendarController::class, 'store']);
+    Route::get('/pages/{page}/calendar/{calendar}', [CalendarController::class, 'show']);
+    Route::put('/pages/{page}/calendar/{calendar}', [CalendarController::class, 'update']);
+    Route::delete('/pages/{page}/calendar/{calendar}', [CalendarController::class, 'destroy']);
 });
